@@ -2,7 +2,15 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart' show immutable;
 
-const Map<String, AuthError> authErrorMapping = {};
+const Map<String, AuthError> authErrorMapping = {
+  "user-not-found" : AuthErrorUserNotFound(),
+  "weak-password" : AuthErrorWeakPassword(),
+  "invalid-email" : AuthErrorInvalidEmail(),
+  "operation-not-allowed" : AuthErrorOperationNotAllowed(),
+  "email-already-in-use" : AuthErrorEmailAlreadyInUse(),
+  "requires-recent-login" : AuthErrorRequiresRecentLogin(),
+  "no-current-user" : AuthErrorNoCurrentUser(),
+};
 
 @immutable 
 abstract class AuthError{
@@ -58,3 +66,40 @@ class AuthErrorOperationNotAllowed extends AuthError
     dialogText: "You cannot register using this method at this moment!",
   );
 }
+
+@immutable
+class AuthErrorUserNotFound extends AuthError
+{
+  const AuthErrorUserNotFound() : super(
+    dialogTitle: "User not found",
+    dialogText: "The given user was not found on the server!",
+  );
+}
+
+@immutable
+class AuthErrorWeakPassword extends AuthError
+{
+  const AuthErrorWeakPassword() : super(
+    dialogTitle: "Weak password",
+    dialogText: "Please choose a stronger password consisting of more characters!",
+  );
+}
+
+@immutable
+class AuthErrorInvalidEmail extends AuthError
+{
+  const AuthErrorInvalidEmail() : super(
+    dialogTitle: "Invalid email",
+    dialogText: "Please double check your email and try again!",
+  );
+}
+
+@immutable
+class AuthErrorEmailAlreadyInUse extends AuthError
+{
+  const AuthErrorEmailAlreadyInUse() : super(
+    dialogTitle: "Email is already in use",
+    dialogText: "Please choose another email!",
+  );
+}
+
