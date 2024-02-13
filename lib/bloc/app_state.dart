@@ -12,7 +12,7 @@ abstract class AppState{
 
   const AppState({
     required this.isLoading,
-    required this.authError,
+    this.authError,
   });
 
 }
@@ -27,7 +27,7 @@ class AppStateLoggedIn extends AppState
   const AppStateLoggedIn(
     {
       required bool isLoading,
-      required AuthError? authError,
+      AuthError? authError,
       required this.user,
       required this.images,
     }
@@ -58,6 +58,80 @@ class AppStateLoggedIn extends AppState
     images,
   );
 
+  @override
+  String toString() => "AppStateLoggin, images.length = ${images.length}";
 
 }
 
+
+@immutable 
+class AppStateLoggedOut extends AppState
+{
+
+  const AppStateLoggedOut(
+    {
+      required bool isLoading,
+      AuthError?  authError,
+    }
+  ) : super(
+    isLoading: isLoading,
+    authError: authError,
+  );
+
+
+  @override
+  String toString() => "AppStateLogOut, isLoading = $isLoading, authError = $authError";
+
+}
+
+@immutable
+class AppStateIsInRegistrationView extends AppState
+{
+
+  const AppStateIsInRegistrationView(
+    { 
+      required bool isLoading,
+      AuthError? authError,
+    }
+  ) : super (
+    isLoading: isLoading,
+    authError: authError,
+  );
+
+}
+
+extension GetUser on AppState
+{
+
+  User? get user {
+    final cls = this;
+    if (cls is AppStateLoggedIn)
+    {
+      return cls.user;
+    }
+    else 
+    {
+      return null;
+    }
+  }
+
+}
+
+extension GetImages on AppState
+{
+
+  Iterable<Reference>? get images
+  {
+    final cls = this;
+    if (cls is AppStateLoggedIn)
+    {
+      return cls.images;
+    }
+    else
+    {
+      return null;
+    }
+  }
+
+
+}
